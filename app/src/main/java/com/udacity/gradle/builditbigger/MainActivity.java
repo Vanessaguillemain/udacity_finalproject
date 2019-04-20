@@ -14,7 +14,7 @@ import com.example.android.jokedisplayer.MainJokeActivity;
 import com.example.android.jokeproviderlib.JokeProvider;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        //Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-        Intent myIntent = new Intent(this, MainJokeActivity.class);
-        myIntent.putExtra(Intent.EXTRA_TEXT, JokeProvider.getJoke());
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, null));
-
-        startActivity(myIntent);
+        new EndpointsAsyncTask(this).execute(null, null);
     }
 
+
+    @Override
+    public void onTaskCompleted(String result) {
+        Intent myIntent = new Intent(this, MainJokeActivity.class);
+        myIntent.putExtra(Intent.EXTRA_TEXT, result);
+        startActivity(myIntent);
+    }
 }
