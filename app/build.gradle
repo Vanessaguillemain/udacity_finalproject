@@ -48,6 +48,6 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    compile project(':jokeproviderlib')
+    compile project(':backend')
     compile project(':jokedisplayer')
 }
