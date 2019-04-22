@@ -1,4 +1,4 @@
-package com.example.android.jokeproviderlib;
+package com.example.android.jokeprovider;
 
 public class JokeProvider {
     public static String getJoke() {
