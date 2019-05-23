@@ -10,9 +10,6 @@ import java.util.concurrent.CountDownLatch;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
-/**
- * Created by vanessa on 19/05/2019.
- */
 
 @RunWith(AndroidJUnit4.class)
 public class AsyncTaskAndroidTest implements OnTaskCompleted {
