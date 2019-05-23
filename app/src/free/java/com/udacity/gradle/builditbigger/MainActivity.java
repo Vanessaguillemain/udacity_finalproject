@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.android.jokedisplayer.MainJokeActivity;
 import com.google.android.gms.ads.AdListener;
@@ -18,11 +19,13 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private InterstitialAd mInterstitialAd;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
 
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
     protected void onResume() {
         super.onResume();
         // we load the interstitial ad in onResume for 2 purposes
-        // 1-the first time it will be ready before clic on button
+        // 1-the first time it will be ready before click on button
         // 2-when the user comes back from the joke, it will prepare
         // for next time
         mInterstitialAd = new InterstitialAd(this);
@@ -62,10 +65,15 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
         mInterstitialAd.setAdListener(new AdListener(){
             @Override
             public void onAdClosed() {
-                //when the ad is closed we fetch the joke
-                new EndpointsAsyncTask(MainActivity.this).execute(null, null);
+                loadDataWithProgressBar();
             }
         });
+    }
+
+    private void loadDataWithProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        //when the ad is closed we fetch the joke
+        new EndpointsAsyncTask(MainActivity.this).execute(null, null);
     }
 
     public void tellJoke(View view) {
@@ -83,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
     public void onTaskCompleted(String result) {
         Intent myIntent = new Intent(this, MainJokeActivity.class);
         myIntent.putExtra(Intent.EXTRA_TEXT, result);
+        mProgressBar.setVisibility(View.GONE);
         startActivity(myIntent);
     }
 }

@@ -6,16 +6,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.android.jokedisplayer.MainJokeActivity;
 
 
 public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
 
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
 
@@ -42,14 +46,20 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
     }
 
     public void tellJoke(View view) {
-        new EndpointsAsyncTask(this).execute(null, null);
+        loadDataWithProgressBar();
     }
 
+    private void loadDataWithProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        //when the ad is closed we fetch the joke
+        new EndpointsAsyncTask(MainActivity.this).execute(null, null);
+    }
 
     @Override
     public void onTaskCompleted(String result) {
         Intent myIntent = new Intent(this, MainJokeActivity.class);
         myIntent.putExtra(Intent.EXTRA_TEXT, result);
+        mProgressBar.setVisibility(View.GONE);
         startActivity(myIntent);
     }
 }
