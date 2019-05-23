@@ -56,6 +56,13 @@ android {
     }
 }
 
+task ('runAppEngineTestAndStop', type: GradleBuild) {
+    description "launches the GCE server, then tests, then shuts the server down"
+    dependsOn ":backend:appengineStart"
+    tasks = [':app:connectedAndroidTest']
+    finalizedBy ":backend:appengineStop"
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     endpointsServer project(path: ':backend', configuration: 'endpoints')
