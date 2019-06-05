@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskCompleted{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar = findViewById(R.id.progressBar);
     }
 
 
